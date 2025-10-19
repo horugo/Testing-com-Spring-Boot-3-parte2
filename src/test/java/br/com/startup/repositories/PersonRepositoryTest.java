@@ -11,12 +11,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import br.com.startup.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.startup.model.Person;
 
 @DataJpaTest
-class PersonRepositoryTest {
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class PersonRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
     private PersonRepository repository;
@@ -29,7 +32,7 @@ class PersonRepositoryTest {
         person0 = new Person(
                 "Leandro",
                 "Costa",
-                "leandro@erudio.com.br",
+                "leandro@startup.com.br",
                 "Uberlândia - Minas Gerais - Brasil",
                 "Male");
     }
@@ -56,7 +59,7 @@ class PersonRepositoryTest {
 
         Person person1 = new Person("Leonardo",
                 "Costa",
-                "leonardo@erudio.com.br",
+                "leonardo@startup.com.br",
                 "Uberlândia - Minas Gerais - Brasil", "Male");
 
         repository.save(person0);
@@ -110,14 +113,14 @@ class PersonRepositoryTest {
         // When / Act
         Person savedPerson = repository.findById(person0.getId()).get();
         savedPerson.setFirstName("Leonardo");
-        savedPerson.setEmail("leonardo@erudio.com.br");
+        savedPerson.setEmail("leonardo@startup.com.br");
 
         Person updatedPerson = repository.save(savedPerson);
 
         // Then / Assert
         assertNotNull(updatedPerson);
         assertEquals("Leonardo", updatedPerson.getFirstName());
-        assertEquals("leonardo@erudio.com.br", updatedPerson.getEmail());
+        assertEquals("leonardo@startup.com.br", updatedPerson.getEmail());
     }
 
     @DisplayName("JUnit test for Given Person Object when Delete then Remove Person")
